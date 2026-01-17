@@ -8,7 +8,8 @@
     <h3>Verify to Continue</h3>
     <button id="btn">Verify</button>
     <div id="status"></div>
-    <a target="_blank" href="https://m.youtube.com">Youtube</a>.
+    <a target="_blank" href="https://t.me/tech_neo">Subscribe for updates</a>.
+    <p>Any Kind of malicious activity is monitored so be careful.</p>
 
     <script>
       const tg = window.Telegram.WebApp;
@@ -20,8 +21,6 @@
       btn.onclick = async () => {
         btn.disabled = true;
         status.innerText = "Verifying...";
-        console.log("tg" + tg);
-        console.log("tele" + window.Telegram.WebApp);
 
         const res = await fetch("/api/verify", {
           method: "POST",
