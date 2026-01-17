@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Verify</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+  </head>
+  <body>
+    <h3>Verify to Continue</h3>
+    <button id="btn">Verify</button>
+    <div id="status"></div>
+    <a target="_blank" href="https://m.youtube.com">Youtube</a>.
+
+    <script>
+      const tg = window.Telegram.WebApp;
+      tg.ready();
+
+      const status = document.getElementById("status");
+      const btn = document.getElementById("btn");
+
+      btn.onclick = async () => {
+        btn.disabled = true;
+        status.innerText = "Verifying...";
+        console.log("tg" + tg);
+        console.log("tele" + window.Telegram.WebApp);
+
+        const res = await fetch("/api/verify", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ initData: tg.initData }),
+        }).catch(() => {
+          status.innerText = "Network error";
+          btn.disabled = false;
+        });
+
+        const data = await res.json();
+        if (data.shortLink) {
+          Telegram.WebApp.openLink(data.shortLink, {
+            try_browser: 'chrome',
+            try_instant_view:false
+          });
+        } else {
+          status.innerText = "Verification failed";
+          btn.disabled = false;
+        }
+      };
+    </script>
+  </body>
+</html>
